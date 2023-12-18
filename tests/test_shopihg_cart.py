@@ -4,7 +4,6 @@ import allure
 import requests
 from allure_commons._allure import step
 from allure_commons.types import AttachmentType
-from requests import Response
 from selene import browser, have
 
 base_url = 'https://demowebshop.tricentis.com/'
@@ -56,18 +55,18 @@ def test_add_to_cart_some_desctop_with_ari(browser_setup):
 
         cookie = response.cookies.get("Nop.customer")
 
-        with step("Set cookie from API"):
-            browser.open('/')
+    with step("Set cookie from API"):
+        browser.open('/')
 
-            browser.driver.add_cookie({"name": "Nop.customer", "value": cookie})
+        browser.driver.add_cookie({"name": "Nop.customer", "value": cookie})
 
-        with step("Open cart"):
-            browser.open('/cart')
+    with step("Open cart"):
+        browser.open('/cart')
 
-        with step("Check one item presents"):
-            browser.all('.cart-item-row').should(have.size(1))
-            browser.all('.cart-item-row').element_by(have.text('14.1-inch Laptop')
-                                                     ).element('[name^="itemquantity"]').should(have.value("2"))
+    with step("Check one item presents"):
+        browser.all('.cart-item-row').should(have.size(1))
+        browser.all('.cart-item-row').element_by(have.text('14.1-inch Laptop')
+                                                 ).element('[name^="itemquantity"]').should(have.value("2"))
 
 
 def test_add_phones_and_laptop_with_api(browser_setup):
@@ -75,21 +74,21 @@ def test_add_phones_and_laptop_with_api(browser_setup):
         response_1 = demowebshop_api_post('/addproducttocart/catalog/31/1/1')
         cookie_1 = response_1.cookies.get("Nop.customer")
 
-        with step("Adding to cart Smartphone"):
-            response_2 = demowebshop_api_post('/addproducttocart/catalog/43/1/1', cookies={"Nop.customer": cookie_1})
-            cookie_2 = response_2.cookies.get("Nop.customer")
+    with step("Adding to cart Smartphone"):
+        response_2 = demowebshop_api_post('/addproducttocart/catalog/43/1/1', cookies={"Nop.customer": cookie_1})
+        cookie_2 = response_2.cookies.get("Nop.customer")
 
-        with step("Set cookie from API"):
-            browser.open('/')
+    with step("Set cookie from API"):
+        browser.open('/')
 
-            browser.driver.add_cookie({"name": "Nop.customer", "value": cookie_2})
+        browser.driver.add_cookie({"name": "Nop.customer", "value": cookie_2})
 
-        with step("Open cart"):
-            browser.open('/cart')
+    with step("Open cart"):
+        browser.open('/cart')
 
-        with step("Check one item presents"):
-            browser.all('.cart-item-row').should(have.size(2))
-            browser.all('.cart-item-row').element_by(have.text('14.1-inch Laptop')
+    with step("Check one item presents"):
+        browser.all('.cart-item-row').should(have.size(2))
+        browser.all('.cart-item-row').element_by(have.text('14.1-inch Laptop')
                                                      ).element('[name^="itemquantity"]').should(have.value("1"))
-            browser.all('.cart-item-row').element_by(have.text('Smartphone')
+        browser.all('.cart-item-row').element_by(have.text('Smartphone')
                                                      ).element('[name^="itemquantity"]').should(have.value("1"))
